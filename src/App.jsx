@@ -89,18 +89,44 @@ class Delete extends React.Component {
 class Homepage extends React.Component {
 	constructor() {
 	super();
+  this.state = {
+    seats: Array(20).fill(true) // true means the seat is free, false means occupied
+  };
 	}
 	render(){
 	return (
 	<div>
 		{/*Q2. Placeholder for Homepage code that shows free seats visually.*/}
+    <h2>Available Seats</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px' }}>
+          {this.state.seats.map((isFree, index) => (
+            <div
+              key={index}
+              style={{
+                width: '50px',
+                height: '50px',
+                backgroundColor: isFree ? 'green' : 'red',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white'
+              }}
+            >
+              {index + 1}
+            </div>
+          ))}
+        </div>
 	</div>);
 	}
 }
 class TicketToRide extends React.Component {
   constructor() {
     super();
-    this.state = { travellers: [], selector: 1};
+    this.state = { 
+      travellers: [], 
+      selector: 1,
+      selectedPage: 'homepage'
+    };
     this.bookTraveller = this.bookTraveller.bind(this);
     this.deleteTraveller = this.deleteTraveller.bind(this);
   }
@@ -132,14 +158,25 @@ class TicketToRide extends React.Component {
         <h1>Ticket To Ride</h1>
 	<div>
 	    {/*Q2. Code for Navigation bar. Use basic buttons to create a nav bar. Use states to manage selection.*/}
+      <div>
+          {/* Navigation bar */}
+          <button onClick={() => this.setState({ selectedPage: 'homepage' })}>Homepage</button>
+          <button onClick={() => this.setState({ selectedPage: 'travellers' })}>Travellers</button>
+          <button onClick={() => this.setState({ selectedPage: 'addTraveller' })}>Add Traveller</button>
+          <button onClick={() => this.setState({ selectedPage: 'deleteTraveller' })}>Delete Traveller</button>
+        </div>
 	</div>
 	<div>
 		{/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
 		{/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
+    {/* Conditionally render components based on selectedPage */}
+    {this.state.selectedPage === 'homepage' && <Homepage />}
 		{/*Q3. Code to call component that Displays Travellers.*/}
-		
+    {this.state.selectedPage === 'travellers' && <Display />}
 		{/*Q4. Code to call the component that adds a traveller.*/}
+    {this.state.selectedPage === 'addTraveller' && <Add />}
 		{/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
+    {this.state.selectedPage === 'deleteTraveller' && <Delete />}
 	</div>
       </div>
     );
