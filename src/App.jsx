@@ -16,7 +16,6 @@ const initialTravellers = [
 
 function TravellerRow(props) {
   {/*Q3. Placeholder to initialize local variable based on traveller prop.*/}
-  console.log(props)
   return (
     <tr>
 	  {/*Q3. Placeholder for rendering one row of a table with required traveller attribute values.*/}
@@ -162,8 +161,6 @@ class Homepage extends React.Component {
 	constructor(props) {
 	super(props);
   const totalSeats = props.totalSeats; // Total number of seats
-  console.log(props.totalSeats)
-  console.log(props.travellers.length)
   const occupiedSeats = props.travellers.length; // Number of occupied seats based on travellers array
   this.state = {
     seats: Array(totalSeats).fill(true).map((seat, index) => index >= occupiedSeats ? true : false), // false for occupied, true for free
