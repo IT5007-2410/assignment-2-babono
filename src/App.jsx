@@ -99,7 +99,18 @@ class Delete extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    /*Q5. Fetch the passenger details from the deletion form and call deleteTraveller()*/
+    /*Q5. Fetch the passenger details from the deletion form and call deleteTraveller()*/    
+    const travellerName = e.target.travellername.value.trim(); // Get the name from the input field
+
+    if (travellerName) {
+      // Construct the passenger object with only the name
+      const passenger = {
+        name: travellerName
+      };
+
+      this.props.deleteTraveller(passenger); // Pass the passenger object with the name
+      e.target.travellername.value = ''; // Clear the input field after submission
+    }
   }
 
   render() {
@@ -238,33 +249,41 @@ class TicketToRide extends React.Component {
 
   deleteTraveller(passenger) {
 	  /*Q5. Write code to delete a passenger from the traveller state variable.*/
+    /* 
+      The .filter() method in JavaScript is used to create a new array that includes only the elements that meet a specific condition. It does not modify the original array; instead, it returns a new array with the filtered elements.
+    */
+    this.setState((prevState) => ({
+      travellers: prevState.travellers.filter(traveller => traveller.name !== passenger.name),
+      selectedPage: 'homepage' // Navigate back to the Homepage
+    }));
   }
+  
   render() {
     return (
       <div>
         <h1>Ticket To Ride</h1>
-	<div>
-	    {/*Q2. Code for Navigation bar. Use basic buttons to create a nav bar. Use states to manage selection.*/}
-      <div>
-          {/* Navigation bar */}
-          <button onClick={() => this.setState({ selectedPage: 'homepage' })}>Homepage</button>
-          <button onClick={() => this.setState({ selectedPage: 'travellers' })}>Travellers</button>
-          <button onClick={() => this.setState({ selectedPage: 'addTraveller' })}>Add Traveller</button>
-          <button onClick={() => this.setState({ selectedPage: 'deleteTraveller' })}>Delete Traveller</button>
+        <div>
+            {/*Q2. Code for Navigation bar. Use basic buttons to create a nav bar. Use states to manage selection.*/}
+            <div>
+                {/* Navigation bar */}
+                <button onClick={() => this.setState({ selectedPage: 'homepage' })}>Homepage</button>
+                <button onClick={() => this.setState({ selectedPage: 'travellers' })}>Travellers</button>
+                <button onClick={() => this.setState({ selectedPage: 'addTraveller' })}>Add Traveller</button>
+                <button onClick={() => this.setState({ selectedPage: 'deleteTraveller' })}>Delete Traveller</button>
+              </div>
         </div>
-	</div>
-	<div>
-		{/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
-		{/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
-    {/* Conditionally render components based on selectedPage */}
-    {this.state.selectedPage === 'homepage' && <Homepage travellers={this.state.travellers} />}
-		{/*Q3. Code to call component that Displays Travellers.*/}
-    {this.state.selectedPage === 'travellers' && <Display travellers={this.state.travellers}/>}
-		{/*Q4. Code to call the component that adds a traveller.*/}
-    {this.state.selectedPage === 'addTraveller' && <Add bookTraveller={this.bookTraveller} />}
-		{/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
-    {this.state.selectedPage === 'deleteTraveller' && <Delete />}
-	</div>
+        <div>
+          {/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
+          {/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
+          {/* Conditionally render components based on selectedPage */}
+          {this.state.selectedPage === 'homepage' && <Homepage travellers={this.state.travellers} />}
+          {/*Q3. Code to call component that Displays Travellers.*/}
+          {this.state.selectedPage === 'travellers' && <Display travellers={this.state.travellers}/>}
+          {/*Q4. Code to call the component that adds a traveller.*/}
+          {this.state.selectedPage === 'addTraveller' && <Add bookTraveller={this.bookTraveller} />}
+          {/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
+          {this.state.selectedPage === 'deleteTraveller' && <Delete deleteTraveller={this.deleteTraveller} />}
+        </div>
       </div>
     );
   }
