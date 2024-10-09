@@ -142,11 +142,12 @@ class Delete extends React.Component {
     return (
       <>
         <h2>Delete Traveller by Name</h2>
-        <p><i>If there are multiple passengers with the same name, all of them will be deleted.</i></p>
+        <p><i>- If there are multiple passengers with the same name, all of them will be deleted.</i></p>
+        <p><i>- Case sensitive.</i></p>
         <form name="deleteTraveller" onSubmit={this.handleSubmit} className="form">
             {/*Q5. Placeholder form to enter information on which passenger's ticket needs to be deleted. Below code is just an example.*/}	        
             <div className="form-group">
-                <label htmlFor="travellername">Title:</label>
+                <label htmlFor="travellername">Name:</label>
                 <input type="text" id="travellername" name="travellername" placeholder="Name" required/>
             </div>
             <button className="button delete">Delete</button>
