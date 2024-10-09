@@ -35,6 +35,9 @@ function Display(props) {
   return (
     <>
       <h2>List of Travellers</h2>
+      {props.travellers.length === 0 ? (  // Check if the travellers list is empty
+        <p>Passenger not found!</p>  // Display message if there are no passengers
+      ) : (
       <table className="bordered-table">
         <thead>
           <tr>
@@ -53,6 +56,7 @@ function Display(props) {
           ))}
         </tbody>
       </table>
+      )}
     </>
   );
 }
@@ -139,6 +143,7 @@ class Delete extends React.Component {
     return (
       <>
         <h2>Delete Traveller by Name</h2>
+        <p><i>If there are multiple passengers with the same name, all of them will be deleted.</i></p>
         <form name="deleteTraveller" onSubmit={this.handleSubmit} className="form">
             {/*Q5. Placeholder form to enter information on which passenger's ticket needs to be deleted. Below code is just an example.*/}	        
             <div className="form-group">
