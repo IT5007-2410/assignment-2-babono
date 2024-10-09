@@ -20,10 +20,12 @@ function TravellerRow(props) {
       <td>{props.traveller.id}</td>
       <td>{props.traveller.name}</td>
       <td>{props.traveller.phone}</td>
-      <td>{props.traveller.bookingTime.toString()}</td>
+      <td>{props.traveller.bookingTime.toLocaleString()}</td>
     </tr>
   );
 }
+
+
 
 function Display(props) {
   
@@ -58,6 +60,23 @@ class Add extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     /*Q4. Fetch the passenger details from the add form and call bookTraveller()*/
+    const travellerName = e.target.travellername.value.trim();
+    const travellerPhone = e.target.travellerphone.value.trim();
+
+    if (travellerName && travellerPhone) {
+      // Create the passenger object
+      const passenger = {
+        name: travellerName,
+        phone: travellerPhone
+      };
+
+      // Pass the passenger object to the parent component
+      this.props.bookTraveller(passenger);
+
+      // Clear the form
+      e.target.travellername.value = ''; 
+      e.target.travellerphone.value = ''; 
+    }
   }
 
   render() {
@@ -65,6 +84,7 @@ class Add extends React.Component {
       <form name="addTraveller" onSubmit={this.handleSubmit}>
 	    {/*Q4. Placeholder to enter passenger details. Below code is just an example.*/}
         <input type="text" name="travellername" placeholder="Name" />
+        <input type="text" name="travellerphone" placeholder="Phone Number" required />
         <button>Add</button>
       </form>
     );
@@ -96,7 +116,7 @@ class Delete extends React.Component {
 class Homepage extends React.Component {
 	constructor(props) {
 	super(props);
-  const totalSeats = 20; // Total number of seats
+  const totalSeats = props.totalSeats; // Total number of seats
   console.log(props.travellers.length)
   const occupiedSeats = props.travellers.length; // Number of occupied seats based on travellers array
   this.state = {
@@ -161,7 +181,8 @@ class TicketToRide extends React.Component {
   constructor() {
     super();
     this.state = { 
-      travellers: [], 
+      travellers: [],
+      totalSeats: 20, 
       selector: 1,
       selectedPage: 'homepage'
     };
@@ -172,6 +193,7 @@ class TicketToRide extends React.Component {
   setSelector(value)
   {
   	/*Q2. Function to set the value of component selector variable based on user's button click.*/
+    this.setState({ selector: value });
   }
   componentDidMount() {
     this.loadData();
@@ -184,7 +206,34 @@ class TicketToRide extends React.Component {
   }
 
   bookTraveller(passenger) {
-	    /*Q4. Write code to add a passenger to the traveller state variable.*/
+    /*Q4. Write code to add a passenger to the traveller state variable.*/
+    // Find the next available seat (if any)
+    const totalSeats = this.state.totalSeats; // Get the total number of seats
+
+    // Check if there are available seats
+    if (this.state.travellers.length >= totalSeats) {
+      alert('No more available seats!'); // Show an alert if seats are full
+      return; // Exit the function, no more bookings allowed
+    }
+
+    // Check for next available ID
+    let nextId = 1;
+    if (this.state.travellers.length > 0) {
+      // Find the highest current ID and increment it
+      nextId = Math.max(...this.state.travellers.map(traveller => traveller.id)) + 1;
+    }
+
+    const newTraveller = {
+      id: nextId, // Unique ID based on highest current ID
+      ...passenger, // Spread the passenger object to include name, phone, etc.
+      bookingTime: new Date().toLocaleString() // Current date and time
+    };
+
+    // Add the new traveller to the list
+    this.setState((prevState) => ({
+      travellers: [...prevState.travellers, newTraveller],
+      selectedPage: 'homepage' // Navigate back to the Homepage
+    }));
   }
 
   deleteTraveller(passenger) {
@@ -212,7 +261,7 @@ class TicketToRide extends React.Component {
 		{/*Q3. Code to call component that Displays Travellers.*/}
     {this.state.selectedPage === 'travellers' && <Display travellers={this.state.travellers}/>}
 		{/*Q4. Code to call the component that adds a traveller.*/}
-    {this.state.selectedPage === 'addTraveller' && <Add />}
+    {this.state.selectedPage === 'addTraveller' && <Add bookTraveller={this.bookTraveller} />}
 		{/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
     {this.state.selectedPage === 'deleteTraveller' && <Delete />}
 	</div>
