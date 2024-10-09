@@ -10,7 +10,6 @@ const initialTravellers = [
   },
 ];
 
-
 function TravellerRow(props) {
   {/*Q3. Placeholder to initialize local variable based on traveller prop.*/}
   console.log(props)
@@ -24,8 +23,6 @@ function TravellerRow(props) {
     </tr>
   );
 }
-
-
 
 function Display(props) {
   
@@ -128,6 +125,7 @@ class Homepage extends React.Component {
 	constructor(props) {
 	super(props);
   const totalSeats = props.totalSeats; // Total number of seats
+  console.log(props.totalSeats)
   console.log(props.travellers.length)
   const occupiedSeats = props.travellers.length; // Number of occupied seats based on travellers array
   this.state = {
@@ -148,7 +146,7 @@ class Homepage extends React.Component {
 
   // Method to update seats state based on the length of travellers
   updateSeatsBasedOnTravellers() {
-    const totalSeats = 20;
+    const totalSeats = this.props.totalSeats;
     const occupiedSeats = this.props.travellers.length; // Number of occupied seats based on travellers array
 
     const newSeats = Array(totalSeats).fill(true).map((seat, index) => index >= occupiedSeats ? true : false); // false for occupied, true for free
@@ -193,7 +191,7 @@ class TicketToRide extends React.Component {
     super();
     this.state = { 
       travellers: [],
-      totalSeats: 20, 
+      totalSeats: 10, 
       selector: 1,
       selectedPage: 'homepage'
     };
@@ -260,31 +258,47 @@ class TicketToRide extends React.Component {
   
   render() {
     return (
-      <div>
-        <h1>Ticket To Ride</h1>
-        <div>
-            {/*Q2. Code for Navigation bar. Use basic buttons to create a nav bar. Use states to manage selection.*/}
-            <div>
+      <>
+        <div className="topHeader">
+            <div className="wrapper">
+                <h1>🚆 Ticket to Ride</h1>
+            </div>
+        </div>
+        <div className="midHeader">
+            <div className="wrapper">
+                <h4>Made for IT5007 Assignment 2 by Muhammad Nurul Akbar (A0310016A)</h4>
+            </div>                            
+        </div>
+        <div className="botHeader">
+            <div className="wrapper">
+                {/*Q2. Code for Navigation bar. Use basic buttons to create a nav bar. Use states to manage selection.*/} 
                 {/* Navigation bar */}
                 <button onClick={() => this.setState({ selectedPage: 'homepage' })}>Homepage</button>
                 <button onClick={() => this.setState({ selectedPage: 'travellers' })}>Travellers</button>
                 <button onClick={() => this.setState({ selectedPage: 'addTraveller' })}>Add Traveller</button>
                 <button onClick={() => this.setState({ selectedPage: 'deleteTraveller' })}>Delete Traveller</button>
-              </div>
+            </div>                            
         </div>
-        <div>
-          {/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
-          {/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
-          {/* Conditionally render components based on selectedPage */}
-          {this.state.selectedPage === 'homepage' && <Homepage travellers={this.state.travellers} />}
-          {/*Q3. Code to call component that Displays Travellers.*/}
-          {this.state.selectedPage === 'travellers' && <Display travellers={this.state.travellers}/>}
-          {/*Q4. Code to call the component that adds a traveller.*/}
-          {this.state.selectedPage === 'addTraveller' && <Add bookTraveller={this.bookTraveller} />}
-          {/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
-          {this.state.selectedPage === 'deleteTraveller' && <Delete deleteTraveller={this.deleteTraveller} />}
+        <div className="main">
+          <div className="wrapper">
+            {/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
+            {/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
+            {/* Conditionally render components based on selectedPage */}
+            {this.state.selectedPage === 'homepage' && <Homepage travellers={this.state.travellers} totalSeats={this.state.totalSeats} />}
+            {/*Q3. Code to call component that Displays Travellers.*/}
+            {this.state.selectedPage === 'travellers' && <Display travellers={this.state.travellers}/>}
+            {/*Q4. Code to call the component that adds a traveller.*/}
+            {this.state.selectedPage === 'addTraveller' && <Add bookTraveller={this.bookTraveller} />}
+            {/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
+            {this.state.selectedPage === 'deleteTraveller' && <Delete deleteTraveller={this.deleteTraveller} />}
+          </div>
         </div>
-      </div>
+        <div className="footer">
+            <div className="wrapper">
+                <h5>Copyright &copy; 2024. All rights reserved.</h5>
+            </div>                            
+        </div> 
+      </>
     );
   }
 }

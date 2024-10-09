@@ -1,0 +1,332 @@
+table.bordered-table th, td {
+    border: 1px solid silver; padding: 4px;
+}
+table.bordered-table {
+    border-collapse: collapse;
+}
+
+body
+{
+    margin: 0;
+    background-color: #fff;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#contents
+{
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.wrapper{
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+    max-width: 1024px;
+}
+
+.main{
+    flex: 1;
+}
+
+.topHeader{
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.topHeader h1{
+    color: #242424;
+    margin: 0;
+}
+
+.midHeader{
+    background-color: #d7d7d7;
+}
+
+.midHeader h4{
+    margin: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.botHeader {
+    background-color: #242424;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.botHeader .wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer{
+    margin-top: 32px;
+    padding: 8px 0;
+    background-color: #F6CC47;
+    text-align: center;
+}
+
+.footer h5{
+    margin: 0;
+}
+
+.total{
+    color: #fff
+}
+
+.total h2{
+    margin: 0;
+}
+
+.total h3{
+    margin: 0;
+}
+
+.button{
+    padding: 8px 32px;
+    outline: none;
+    border: none;
+    border-radius: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    vertical-align: bottom;
+    display: flex;
+    align-items: center;
+}
+
+.button.action{
+    background-color: #74BFA8;
+    color: #fff;
+}
+
+.button.action:hover{
+    background-color: #8ed9c6;
+}
+
+.button i{
+    font-size: 28px;
+    margin-right: 8px;
+}
+
+.displayHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    width: 80%;
+    max-width: 512px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.modal-content.delete {
+    background-color: #EC765B;
+    color: #fff;
+}
+
+.modal-content.delete .modal-header{
+    background-color: #EC765B;
+    justify-content: end;
+}
+
+.modal-content.delete .form-action button{
+    background-color: #fefefe;
+    color: #EC765B;
+}
+
+.modal-content.delete .form-action button:hover{
+    background-color: #f18f7a;
+}
+
+.modal-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: #242424;
+    color: #fff;
+}
+
+.modal-header h2{
+    margin: 0;
+}
+
+.modal-body{
+    padding: 16px;
+}
+
+.close {
+    color: #fff;    
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #aaa;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form-group{
+    margin-bottom: 16px;
+}
+
+.form-group input{
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #d7d7d7;
+}
+
+.form-text {
+    text-align: center;
+    font-weight: bold;    
+    margin-bottom: 48px;
+}
+
+.form label{
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.form select{
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #d7d7d7;
+}
+
+.form-action{
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.form-action button{
+    font-size: 16px;
+}
+
+.cardList{
+    padding: 8px 16px;
+}
+
+.cardItem{
+    border: 8px solid #d7d7d7;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.cardItem.noExpense{
+    text-align: center;
+    padding: 32px;
+}
+
+.cardItem.noExpense h1::before{
+    content: "🤑";
+    display: block;
+    font-size: 128px;
+}
+
+.cardRow{
+    display: flex;
+    padding: 8px 16px;
+    justify-content: space-between;
+}
+
+.cardTitle{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.cardAmount{
+    font-weight: bold;
+}
+
+.cardAction {
+    margin-bottom: 8px;
+    margin-right: 16px;
+    display: flex;  
+    justify-content: end;  
+}
+
+.cardSerial,
+.cardDate{
+    font-size: 14px;
+}
+
+.cardCategory{
+    font-size: 14px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 8px;
+    color: #fff;
+}
+
+.cardSerial::before{
+    content: "#";
+}
+
+.cardSerial::after{
+    content: " |";
+}
+
+.cardAction button{    
+    outline: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 16px;
+    border-radius: 16px;
+    padding: 2px 16px;
+}
+
+.cardAction button i {
+    font-size: 22px;
+    margin-right: 8px;
+}
+
+.cardAction .delete{
+    background-color: #EC765B;
+    color: #fff;
+}
+
+.cardAction .delete:hover{
+    background-color: #f18f7a;
+}
+
+.cardAction .edit{
+    background-color: #74BFA8;    
+    color: #fff;
+}
+
+.cardAction .edit:hover{    
+    background-color: #8ed9c6;
+}
