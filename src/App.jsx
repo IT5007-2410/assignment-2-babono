@@ -3,13 +3,13 @@ const initialTravellers = [
   {
     id: 1, name: 'Jack', 
     phone: 88885555,
-    dob: new Date(1892, 4, 15),
+    dob: "1892-05-15",
     bookingTime: new Date(),
   },
   {
     id: 2, name: 'Rose', 
     phone: 88884444,
-    dob: new Date(1895, 1, 17),
+    dob: "1895-02-17",
     bookingTime: new Date(),
   },
 ];
@@ -20,10 +20,10 @@ function TravellerRow(props) {
   return (
     <tr>
 	  {/*Q3. Placeholder for rendering one row of a table with required traveller attribute values.*/}
-      <td>{props.traveller.id}</td>
+      <td>{props.index + 1}</td>
       <td>{props.traveller.name}</td>
       <td>{props.traveller.phone}</td>
-      <td>{props.traveller.dob.toDateString().split(' ').slice(1).join(' ')}</td>
+      <td>{props.traveller.dob}</td>
       <td>{props.traveller.bookingTime.toLocaleString()}</td>
     </tr>
   );
@@ -48,8 +48,8 @@ function Display(props) {
         </thead>
         <tbody>
           {/*Q3. write code to call the JS variable defined at the top of this function to render table rows.*/}
-          {props.travellers.map(traveller => (
-            <TravellerRow key={traveller.id} traveller={traveller} />
+          {props.travellers.map((traveller,index) => (
+            <TravellerRow key={index} index={index} traveller={traveller} />
           ))}
         </tbody>
       </table>
@@ -68,12 +68,14 @@ class Add extends React.Component {
     /*Q4. Fetch the passenger details from the add form and call bookTraveller()*/
     const travellerName = e.target.travellername.value.trim();
     const travellerPhone = e.target.travellerphone.value.trim();
+    const travellerDOB = e.target.travellerdob.value;
 
-    if (travellerName && travellerPhone) {
+    if (travellerName && travellerPhone && travellerDOB) {
       // Create the passenger object
       const passenger = {
         name: travellerName,
-        phone: travellerPhone
+        phone: travellerPhone,
+        dob: travellerDOB
       };
 
       // Pass the passenger object to the parent component
@@ -82,17 +84,31 @@ class Add extends React.Component {
       // Clear the form
       e.target.travellername.value = ''; 
       e.target.travellerphone.value = ''; 
+      e.target.travellerdob.value = '';
     }
   }
 
   render() {
     return (
-      <form name="addTraveller" onSubmit={this.handleSubmit}>
-	    {/*Q4. Placeholder to enter passenger details. Below code is just an example.*/}
-        <input type="text" name="travellername" placeholder="Name" />
-        <input type="text" name="travellerphone" placeholder="Phone Number" required />
-        <button>Add</button>
-      </form>
+      <>
+        <h2>Add Traveler</h2>
+        <form name="addTraveller" onSubmit={this.handleSubmit} className="form">
+          {/*Q4. Placeholder to enter passenger details. Below code is just an example.*/}
+          <div className="form-group">
+            <label htmlFor="travellername">Name:</label>
+            <input type="text" id="travellername" name="travellername" placeholder="Name" required/>
+          </div>
+          <div className="form-group">
+              <label htmlFor="travellerphone">Phone Number:</label>
+              <input type="number" id="travellerphone" name="travellerphone" placeholder="Phone Number" required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="travellerdob">Date of Birth:</label>
+            <input type="date" name="travellerdob" placeholder="Date of Birth" required />
+          </div>
+          <button className="button action">Add</button>
+        </form>
+      </>
     );
   }
 }
@@ -121,11 +137,18 @@ class Delete extends React.Component {
 
   render() {
     return (
-      <form name="deleteTraveller" onSubmit={this.handleSubmit}>
-	    {/*Q5. Placeholder form to enter information on which passenger's ticket needs to be deleted. Below code is just an example.*/}
-	<input type="text" name="travellername" placeholder="Name" />
-        <button>Delete</button>
-      </form>
+      <>
+        <h2>Delete Traveller by Name</h2>
+        <form name="deleteTraveller" onSubmit={this.handleSubmit} className="form">
+            {/*Q5. Placeholder form to enter information on which passenger's ticket needs to be deleted. Below code is just an example.*/}	        
+            <div className="form-group">
+                <label htmlFor="travellername">Title:</label>
+                <input type="text" id="travellername" name="travellername" placeholder="Name" required/>
+            </div>
+            <button className="button delete">Delete</button>
+        </form>
+      </>
+      
     );
   }
 }
@@ -204,8 +227,7 @@ class TicketToRide extends React.Component {
     this.state = { 
       travellers: [],
       totalSeats: 10, 
-      selector: 1,
-      selectedPage: 'homepage'
+      selector: 1
     };
     this.bookTraveller = this.bookTraveller.bind(this);
     this.deleteTraveller = this.deleteTraveller.bind(this);
@@ -252,9 +274,9 @@ class TicketToRide extends React.Component {
 
     // Add the new traveller to the list
     this.setState((prevState) => ({
-      travellers: [...prevState.travellers, newTraveller],
-      selectedPage: 'homepage' // Navigate back to the Homepage
+      travellers: [...prevState.travellers, newTraveller]      
     }));
+    this.setSelector(1) // Navigate back to the Homepage
   }
 
   deleteTraveller(passenger) {
@@ -262,10 +284,17 @@ class TicketToRide extends React.Component {
     /* 
       The .filter() method in JavaScript is used to create a new array that includes only the elements that meet a specific condition. It does not modify the original array; instead, it returns a new array with the filtered elements.
     */
+    const passengerExists = this.state.travellers.some(traveller => traveller.name === passenger.name);
+
+    if (!passengerExists) {
+      alert('Passenger name not found!'); // Show alert if passenger does not exist
+      return;
+    }
+
     this.setState((prevState) => ({
-      travellers: prevState.travellers.filter(traveller => traveller.name !== passenger.name),
-      selectedPage: 'homepage' // Navigate back to the Homepage
+      travellers: prevState.travellers.filter(traveller => traveller.name !== passenger.name)      
     }));
+    this.setSelector(1) // Navigate back to the Homepage
   }
   
   render() {
@@ -285,10 +314,10 @@ class TicketToRide extends React.Component {
             <div className="wrapper">
                 {/*Q2. Code for Navigation bar. Use basic buttons to create a nav bar. Use states to manage selection.*/} 
                 {/* Navigation bar */}
-                <button onClick={() => this.setState({ selectedPage: 'homepage' })}>Seats Plan</button>
-                <button onClick={() => this.setState({ selectedPage: 'travellers' })}>Travellers</button>
-                <button onClick={() => this.setState({ selectedPage: 'addTraveller' })}>Add Traveller</button>
-                <button onClick={() => this.setState({ selectedPage: 'deleteTraveller' })}>Delete Traveller</button>
+                <button className="button" onClick={() => this.setSelector(1)}>Seats Plan</button>
+                <button className="button" onClick={() => this.setSelector(2)}>Travellers</button>
+                <button className="button" onClick={() => this.setSelector(3)}>Add Traveller</button>
+                <button className="button" onClick={() => this.setSelector(4)}>Delete Traveller</button>
             </div>                            
         </div>
         <div className="main">
@@ -296,13 +325,13 @@ class TicketToRide extends React.Component {
             {/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
             {/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
             {/* Conditionally render components based on selectedPage */}
-            {this.state.selectedPage === 'homepage' && <Homepage travellers={this.state.travellers} totalSeats={this.state.totalSeats} />}
+            {this.state.selector === 1 && <Homepage travellers={this.state.travellers} totalSeats={this.state.totalSeats} />}
             {/*Q3. Code to call component that Displays Travellers.*/}
-            {this.state.selectedPage === 'travellers' && <Display travellers={this.state.travellers}/>}
+            {this.state.selector === 2 && <Display travellers={this.state.travellers}/>}
             {/*Q4. Code to call the component that adds a traveller.*/}
-            {this.state.selectedPage === 'addTraveller' && <Add bookTraveller={this.bookTraveller} />}
+            {this.state.selector === 3 && <Add bookTraveller={this.bookTraveller} />}
             {/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
-            {this.state.selectedPage === 'deleteTraveller' && <Delete deleteTraveller={this.deleteTraveller} />}
+            {this.state.selector === 4 && <Delete deleteTraveller={this.deleteTraveller} />}
           </div>
         </div>
         <div className="footer">

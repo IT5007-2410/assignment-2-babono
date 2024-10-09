@@ -111,6 +111,15 @@ body
     background-color: #8ed9c6;
 }
 
+.button.delete{
+    background-color: #EC765B;
+    color: #fff;
+}
+
+.button.delete:hover{
+    background-color: #f18f7a;
+}
+
 .button i{
     font-size: 28px;
     margin-right: 8px;
@@ -154,6 +163,10 @@ body
     margin-bottom: 48px;
 }
 
+.form {
+    max-width: 400px;
+}
+
 .form label{
     font-weight: bold;
     display: block;
@@ -175,105 +188,4 @@ body
 
 .form-action button{
     font-size: 16px;
-}
-
-.cardList{
-    padding: 8px 16px;
-}
-
-.cardItem{
-    border: 8px solid #d7d7d7;
-    border-radius: 16px;
-    overflow: hidden;
-    margin-bottom: 16px;
-}
-
-.cardItem.noExpense{
-    text-align: center;
-    padding: 32px;
-}
-
-.cardItem.noExpense h1::before{
-    content: "🤑";
-    display: block;
-    font-size: 128px;
-}
-
-.cardRow{
-    display: flex;
-    padding: 8px 16px;
-    justify-content: space-between;
-}
-
-.cardTitle{
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.cardAmount{
-    font-weight: bold;
-}
-
-.cardAction {
-    margin-bottom: 8px;
-    margin-right: 16px;
-    display: flex;  
-    justify-content: end;  
-}
-
-.cardSerial,
-.cardDate{
-    font-size: 14px;
-}
-
-.cardCategory{
-    font-size: 14px;
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 8px;
-    color: #fff;
-}
-
-.cardSerial::before{
-    content: "#";
-}
-
-.cardSerial::after{
-    content: " |";
-}
-
-.cardAction button{    
-    outline: none;
-    border: none;
-    cursor: pointer;
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 16px;
-    border-radius: 16px;
-    padding: 2px 16px;
-}
-
-.cardAction button i {
-    font-size: 22px;
-    margin-right: 8px;
-}
-
-.cardAction .delete{
-    background-color: #EC765B;
-    color: #fff;
-}
-
-.cardAction .delete:hover{
-    background-color: #f18f7a;
-}
-
-.cardAction .edit{
-    background-color: #74BFA8;    
-    color: #fff;
-}
-
-.cardAction .edit:hover{    
-    background-color: #8ed9c6;
 }
