@@ -94,17 +94,47 @@ class Delete extends React.Component {
 }
 
 class Homepage extends React.Component {
-	constructor() {
-	super();
+	constructor(props) {
+	super(props);
+  const totalSeats = 20; // Total number of seats
+  console.log(props.travellers.length)
+  const occupiedSeats = props.travellers.length; // Number of occupied seats based on travellers array
   this.state = {
-    seats: Array(20).fill(true) // true means the seat is free, false means occupied
+    seats: Array(totalSeats).fill(true).map((seat, index) => index >= occupiedSeats ? true : false), // false for occupied, true for free
   };
 	}
+  // Lifecycle method to set the state when the component is first loaded
+  componentDidMount() {
+    this.updateSeatsBasedOnTravellers();
+  }
+
+  // Lifecycle method to update the state when props change (e.g., travellers)
+  componentDidUpdate(prevProps) {
+    if (prevProps.travellers !== this.props.travellers) {
+      this.updateSeatsBasedOnTravellers();
+    }
+  }
+
+  // Method to update seats state based on the length of travellers
+  updateSeatsBasedOnTravellers() {
+    const totalSeats = 20;
+    const occupiedSeats = this.props.travellers.length; // Number of occupied seats based on travellers array
+
+    const newSeats = Array(totalSeats).fill(true).map((seat, index) => index >= occupiedSeats ? true : false); // false for occupied, true for free
+
+    this.setState({ seats: newSeats });
+  }
 	render(){
-	return (
-	<div>
-		{/*Q2. Placeholder for Homepage code that shows free seats visually.*/}
-    <h2>Available Seats</h2>
+    // Count the number of free and occupied seats
+    const freeSeats = this.state.seats.filter(isFree => isFree).length;
+    const occupiedSeats = this.state.seats.length - freeSeats;
+    return (
+      <div>
+        {/*Q2. Placeholder for Homepage code that shows free seats visually.*/}
+        <h2>Available Seats</h2>
+        <p>Total Seats: {this.state.seats.length}</p>
+        <p>Free Seats: {freeSeats}</p>
+        <p>Reserved Seats: {occupiedSeats}</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px' }}>
           {this.state.seats.map((isFree, index) => (
             <div
@@ -123,8 +153,9 @@ class Homepage extends React.Component {
             </div>
           ))}
         </div>
-	</div>);
-	}
+      </div>
+    );
+  }
 }
 class TicketToRide extends React.Component {
   constructor() {
@@ -177,7 +208,7 @@ class TicketToRide extends React.Component {
 		{/*Only one of the below four divisions is rendered based on the button clicked by the user.*/}
 		{/*Q2 and Q6. Code to call Instance that draws Homepage. Homepage shows Visual Representation of free seats.*/}
     {/* Conditionally render components based on selectedPage */}
-    {this.state.selectedPage === 'homepage' && <Homepage />}
+    {this.state.selectedPage === 'homepage' && <Homepage travellers={this.state.travellers} />}
 		{/*Q3. Code to call component that Displays Travellers.*/}
     {this.state.selectedPage === 'travellers' && <Display travellers={this.state.travellers}/>}
 		{/*Q4. Code to call the component that adds a traveller.*/}
