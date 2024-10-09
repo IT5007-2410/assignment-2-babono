@@ -1,11 +1,15 @@
 /*Q1. JS Variable needs to be created here. Below variable is just an example. Try to add more attributes.*/
 const initialTravellers = [
   {
-    id: 1, name: 'Jack', phone: 88885555,
+    id: 1, name: 'Jack', 
+    phone: 88885555,
+    dob: new Date(1892, 4, 15),
     bookingTime: new Date(),
   },
   {
-    id: 2, name: 'Rose', phone: 88884444,
+    id: 2, name: 'Rose', 
+    phone: 88884444,
+    dob: new Date(1895, 1, 17),
     bookingTime: new Date(),
   },
 ];
@@ -19,6 +23,7 @@ function TravellerRow(props) {
       <td>{props.traveller.id}</td>
       <td>{props.traveller.name}</td>
       <td>{props.traveller.phone}</td>
+      <td>{props.traveller.dob.toDateString().split(' ').slice(1).join(' ')}</td>
       <td>{props.traveller.bookingTime.toLocaleString()}</td>
     </tr>
   );
@@ -28,23 +33,27 @@ function Display(props) {
   
 	/*Q3. Write code to render rows of table, reach corresponding to one traveller. Make use of the TravellerRow function that draws one row.*/
   return (
-    <table className="bordered-table">
-      <thead>
-        <tr>
-	  {/*Q3. Below table is just an example. Add more columns based on the traveller attributes you choose.*/}
-          <th>ID</th>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Booking Time</th>
-        </tr>
-      </thead>
-      <tbody>
-        {/*Q3. write code to call the JS variable defined at the top of this function to render table rows.*/}
-        {props.travellers.map(traveller => (
-          <TravellerRow key={traveller.id} traveller={traveller} />
-        ))}
-      </tbody>
-    </table>
+    <>
+      <h2>List of Travellers</h2>
+      <table className="bordered-table">
+        <thead>
+          <tr>
+            {/*Q3. Below table is just an example. Add more columns based on the traveller attributes you choose.*/}
+            <th>No</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Date of Birth</th>
+            <th>Booking Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/*Q3. write code to call the JS variable defined at the top of this function to render table rows.*/}
+          {props.travellers.map(traveller => (
+            <TravellerRow key={traveller.id} traveller={traveller} />
+          ))}
+        </tbody>
+      </table>
+    </>
   );
 }
 
@@ -160,27 +169,30 @@ class Homepage extends React.Component {
     return (
       <div>
         {/*Q2. Placeholder for Homepage code that shows free seats visually.*/}
-        <h2>Available Seats</h2>
-        <p>Total Seats: {this.state.seats.length}</p>
-        <p>Free Seats: {freeSeats}</p>
-        <p>Reserved Seats: {occupiedSeats}</p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px' }}>
-          {this.state.seats.map((isFree, index) => (
-            <div
-              key={index}
-              style={{
-                width: '50px',
-                height: '50px',
-                backgroundColor: isFree ? 'green' : 'red',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white'
-              }}
-            >
-              {index + 1}
+        <h2>Seats Plan</h2>                
+        <div className="seatMap">
+          <h3>💺 Total Seats: {this.state.seats.length}</h3>
+          <div className="seatMapLegend">
+            <h4>🟩 Available Seats: {freeSeats}</h4>
+            <h4>⬜ Seats Taken: {occupiedSeats}</h4>
+          </div>
+          <div className="seatMapGrid">
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px' }}>
+              {this.state.seats.map((isFree, index) => (
+                <div
+                  key={index}
+                  style={{
+                    width: '50px',
+                    height: '50px',
+                    backgroundColor: isFree ? '#32B215' : '#D9D9D9',
+                    borderRadius: '10px',
+                    margin: '0 auto'                
+                  }}
+                >
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     );
@@ -273,7 +285,7 @@ class TicketToRide extends React.Component {
             <div className="wrapper">
                 {/*Q2. Code for Navigation bar. Use basic buttons to create a nav bar. Use states to manage selection.*/} 
                 {/* Navigation bar */}
-                <button onClick={() => this.setState({ selectedPage: 'homepage' })}>Homepage</button>
+                <button onClick={() => this.setState({ selectedPage: 'homepage' })}>Seats Plan</button>
                 <button onClick={() => this.setState({ selectedPage: 'travellers' })}>Travellers</button>
                 <button onClick={() => this.setState({ selectedPage: 'addTraveller' })}>Add Traveller</button>
                 <button onClick={() => this.setState({ selectedPage: 'deleteTraveller' })}>Delete Traveller</button>
